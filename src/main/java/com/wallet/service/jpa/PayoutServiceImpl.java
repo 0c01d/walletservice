@@ -53,7 +53,7 @@ public class PayoutServiceImpl implements PayoutService {
         if (size == null) {
             size = 5;
         }
-        return payoutRepository.findAllPayoutByWalletUuid(uuid, new PageRequest(page, size));
+        return payoutRepository.findAllPayoutByWalletUuid(uuid, PageRequest.of(page, size));
 
     }
 }

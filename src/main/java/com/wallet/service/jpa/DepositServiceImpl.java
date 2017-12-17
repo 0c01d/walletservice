@@ -54,7 +54,7 @@ public class DepositServiceImpl implements DepositService {
         if (size == null) {
             size = 5;
         }
-        return depositRepository.findAllDepositByWalletUuid(uuid, new PageRequest(page, size));
+        return depositRepository.findAllDepositByWalletUuid(uuid, PageRequest.of(page, size));
 
     }
 }
