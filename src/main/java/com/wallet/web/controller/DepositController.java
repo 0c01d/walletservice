@@ -1,6 +1,7 @@
 package com.wallet.web.controller;
 
 import com.wallet.domain.Deposit;
+import com.wallet.exception.DepositLimitException;
 import com.wallet.service.DepositService;
 import com.wallet.web.model.DepositRequest;
 import com.wallet.web.model.DepositResponse;
@@ -25,19 +26,21 @@ public class DepositController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public DepositResponse createDeposit(@RequestBody DepositRequest depositRequest, HttpServletResponse response) {
+    public DepositResponse createDeposit(@RequestBody DepositRequest depositRequest, HttpServletResponse response)
+            throws DepositLimitException {
         Deposit deposit = depositService.create(depositRequest);
         response.addHeader(HttpHeaders.LOCATION, "/deposit/" + depositRequest.getWalletUUID());
         return new DepositResponse(deposit);
     }
 
     @RequestMapping(value = "/{depositUUID}", method = RequestMethod.GET)
-    public List<DepositResponse> getListDepositByUuid(@PathVariable("depositUUID") UUID uuid, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size) {
+    public List<DepositResponse> getListDepositByUuid(@PathVariable("depositUUID") UUID uuid,
+                                                      @RequestParam(value = "page", required = false) Integer page,
+                                                      @RequestParam(value = "size", required = false) Integer size) {
         return depositService.getDepositByWalletUuid(uuid, page, size)
                 .getContent()
                 .stream()
                 .map(DepositResponse::new)
                 .collect(Collectors.toList());
-
     }
 }

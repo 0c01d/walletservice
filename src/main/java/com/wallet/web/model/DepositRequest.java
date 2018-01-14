@@ -1,13 +1,23 @@
 package com.wallet.web.model;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-@Data
-@Accessors(chain = true)
 public class DepositRequest {
-    UUID walletUUID;
-    Integer value;
+    private final UUID walletUUID;
+    private final BigDecimal value;
+
+    public UUID getWalletUUID() {
+        return walletUUID;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public DepositRequest(UUID walletUUID, BigDecimal value) {
+        this.walletUUID = walletUUID;
+        this.value = value;
+    }
 }

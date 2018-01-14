@@ -1,10 +1,7 @@
 package com.wallet.web;
 
-import com.wallet.domain.Deposit;
 import com.wallet.web.model.DepositRequest;
 import com.wallet.web.model.DepositResponse;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,10 +12,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.net.URI;
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
@@ -27,34 +24,15 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @DisplayName("DepositController Test")
 class DepositControllerTest {
 
-    private URI l;
-
     @Autowired
     private TestRestTemplate restTemplate;
-
-    @Before
-    public void deposit() {
-        Deposit depositExp = new Deposit()
-                .setValue(100);
-        l = restTemplate.postForLocation("/deposit/", depositExp);
-    }
 
     @Test
     @DisplayName("Create_Deposit")
     void createDeposit() {
-        DepositRequest depositRequest = new DepositRequest()
-                .setValue(100)
-                .setWalletUUID(UUID.fromString("23b78e32-d319-4611-afbd-7c5a1ef6c70d"));
+        DepositRequest depositRequest =
+                new DepositRequest(UUID.fromString("23b78e32-d319-4611-afbd-7c5a1ef6c70d"), BigDecimal.valueOf(100));
         DepositResponse actualResponse = restTemplate.postForObject("/deposit/", depositRequest, DepositResponse.class);
-        assertEquals("Invalid response", 100, actualResponse.getValue());
+        assertEquals("Invalid response", BigDecimal.valueOf(100), actualResponse.getValue());
     }
-
-   /* @Test
-    @DisplayName("Get Deposit")
-    void getDeposit() {
-
-        DepositResponse expectedResponse  = restTemplate.getForObject(l, DepositResponse.class);
-        assertEquals("Invalid response",100 , expectedResponse.getValue());
-
-    }*/
 }

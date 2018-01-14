@@ -2,6 +2,7 @@ package com.wallet.service.jpa;
 
 import com.wallet.domain.Payout;
 import com.wallet.domain.Wallet;
+import com.wallet.exception.InsufficientFundsException;
 import com.wallet.repository.PayoutRepository;
 import com.wallet.service.PayoutService;
 import com.wallet.web.model.PayoutRequest;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -27,33 +27,25 @@ public class PayoutServiceImpl implements PayoutService {
     }
 
     @Override
-    public Payout create(PayoutRequest payoutRequest) {
-        Payout payout = new Payout();
-
+    @Transactional(readOnly = true)
+    public Payout create(PayoutRequest payoutRequest) throws InsufficientFundsException {
         Wallet wallet = walletService.getWalletByUuid(payoutRequest.getWalletUUID());
-        if( wallet != null) {
-            payout.setWallet(wallet);
+
+        if (wallet.getBalance().compareTo(payoutRequest.getValue()) > 0) {
+            throw new InsufficientFundsException("Payout {" + payoutRequest.getValue() + "} more than your balance");
         }
 
-        if(wallet.getBalance() >= payoutRequest.getValue()) {
-            payout.setValue(payoutRequest.getValue());
-            wallet.setBalance(wallet.getBalance() - payoutRequest.getValue());
-        }
-        else {
-            throw new EntityNotFoundException("Payout {" + payoutRequest.getValue() + "} more than your balance");
-        }
+        Payout payout = new Payout(wallet, payoutRequest.getValue());
+        Wallet walletNewBalance = new Wallet(wallet.getUuid(), wallet.getBalance().subtract(payoutRequest.getValue()));
 
+        walletService.save(walletNewBalance);
         return payoutRepository.save(payout);
     }
-    @Override
-    @Transactional(readOnly = true)
-    public Page<Payout> getPayoutByWalletUuid(UUID uuid, Integer page, Integer size){
-        if(page == null)
-            page = 0;
-        if (size == null) {
-            size = 5;
-        }
-        return payoutRepository.findAllPayoutByWalletUuid(uuid, PageRequest.of(page, size));
 
+    @Override
+    public Page<Payout> getPayoutByWalletUuid(UUID uuid, Integer page, Integer size) {
+        if (page == null) page = 0;
+        if (size == null) size = 5;
+        return payoutRepository.findAllPayoutByWalletUuid(uuid, PageRequest.of(page, size));
     }
 }
