@@ -1,26 +1,38 @@
 package com.wallet.domain;
 
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import javax.persistence.*;
+import java.math.BigDecimal;
 
-@Data
 @Entity
-@Accessors(chain = true)
 @Table(name = "deposit", schema = "wallet_service")
 public class Deposit {
 
     @Id
-    @Column(name = "deposit_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_wallet_uuid")
-    private Wallet wallet;
+    private final Wallet wallet;
 
     @Column(name = "deposit_value")
-    private Integer value;
+    private final BigDecimal value;
 
+    public Long getId() {
+        return id;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public Deposit(Wallet wallet, BigDecimal value) {
+        this.wallet = wallet;
+        this.value = value;
+    }
 }

@@ -29,8 +29,8 @@ public class WalletController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public WalletResponse createWallet(@RequestBody String walletRequest, HttpServletResponse response) {
-        Wallet wallet = walletService.createWallet(walletRequest);
+    public WalletResponse createWallet(@RequestBody String ignored, HttpServletResponse response) {
+        Wallet wallet = walletService.create();
         response.addHeader(HttpHeaders.LOCATION, "/wallet/" + wallet.getUuid());
         return new WalletResponse(wallet);
     }

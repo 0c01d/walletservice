@@ -2,22 +2,28 @@ package com.wallet.web.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wallet.domain.Deposit;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DepositResponse {
 
-    Integer id;
-    UUID walletUUID;
-    Integer value;
+    private final Long id;
+    private final UUID walletUUID;
+    private final BigDecimal value;
 
+    public Long getId() {
+        return id;
+    }
+
+    public UUID getWalletUUID() {
+        return walletUUID;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
 
     public DepositResponse(Deposit deposit) {
         this.id = deposit.getId();

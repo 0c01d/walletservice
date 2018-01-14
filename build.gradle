@@ -2,7 +2,7 @@ buildscript {
     ext {
         springBootVersion = '2.0.0.M6'
         junitVersion = '5.0.1'
-        lombokVersion = '1.16.18'
+        jacksonCoreVersion = '2.9.3'
     }
     repositories {
         mavenCentral()
@@ -10,7 +10,6 @@ buildscript {
         maven { url "https://repo.spring.io/milestone" }
     }
     dependencies {
-        classpath("org.projectlombok:lombok:${lombokVersion}")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.1")
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 
@@ -45,10 +44,10 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka:2.0.0.M2')
-    compile('org.apiguardian:apiguardian-api:1.0.0')
-
-    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    compile("com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}")
+    compile('javax.validation:validation-api:2.0.0.Final')
+    compile('org.hibernate:hibernate-validator:6.0.4.Final')
+    compile('javax.xml.bind:jaxb-api:2.3.0') // java.lang.NoClassDefFoundError on JAVA 9 fix
 
     runtime('org.postgresql:postgresql')
 
