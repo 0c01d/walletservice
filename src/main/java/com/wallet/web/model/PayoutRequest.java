@@ -1,10 +1,17 @@
 package com.wallet.web.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class PayoutRequest {
+    @NotNull
     private final UUID walletUUID;
+
+    @Positive
     private final BigDecimal value;
 
     public UUID getWalletUUID() {
@@ -15,7 +22,8 @@ public class PayoutRequest {
         return value;
     }
 
-    public PayoutRequest(UUID walletUUID, BigDecimal value) {
+    public PayoutRequest(@JsonProperty("walletUUID") UUID walletUUID,
+                         @JsonProperty("value") BigDecimal value) {
         this.walletUUID = walletUUID;
         this.value = value;
     }

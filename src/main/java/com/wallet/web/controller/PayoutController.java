@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,12 +27,13 @@ public class PayoutController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public PayoutResponse createPayout(@RequestBody PayoutRequest payoutRequest, HttpServletResponse response)
+    public PayoutResponse createPayout(@Valid @RequestBody PayoutRequest payoutRequest, HttpServletResponse response)
             throws InsufficientFundsException {
         Payout payout = payoutService.create(payoutRequest);
         response.addHeader(HttpHeaders.LOCATION, "/payout/" + payoutRequest.getWalletUUID());
         return new PayoutResponse(payout);
     }
+
     @RequestMapping(value = "/{depositUUID}", method = RequestMethod.GET)
     public List<PayoutResponse> getListPayoutByUuid(@PathVariable("depositUUID") UUID uuid,
                                                     @RequestParam(value = "page", required = false) Integer page,
