@@ -27,22 +27,23 @@ public class PayoutServiceImpl implements PayoutService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Payout create(PayoutRequest payoutRequest) throws InsufficientFundsException {
         Wallet wallet = walletService.getWalletByUuid(payoutRequest.getWalletUUID());
 
-        if (wallet.getBalance().compareTo(payoutRequest.getValue()) > 0) {
+        if (wallet.getBalance().compareTo(payoutRequest.getValue()) < 0) {
             throw new InsufficientFundsException("Payout {" + payoutRequest.getValue() + "} more than your balance");
         }
 
         Payout payout = new Payout(wallet, payoutRequest.getValue());
-        Wallet walletNewBalance = new Wallet(wallet.getUuid(), wallet.getBalance().subtract(payoutRequest.getValue()));
+        wallet.setBalance(wallet.getBalance().subtract(payoutRequest.getValue()));
 
-        walletService.save(walletNewBalance);
+        walletService.save(wallet);
         return payoutRepository.save(payout);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<Payout> getPayoutByWalletUuid(UUID uuid, Integer page, Integer size) {
         if (page == null) page = 0;
         if (size == null) size = 5;

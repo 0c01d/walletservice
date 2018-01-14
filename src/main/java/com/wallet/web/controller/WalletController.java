@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -29,7 +30,7 @@ public class WalletController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public WalletResponse createWallet(@RequestBody String ignored, HttpServletResponse response) {
+    public WalletResponse createWallet(@Valid @RequestBody(required = false) String ignored, HttpServletResponse response) {
         Wallet wallet = walletService.create();
         response.addHeader(HttpHeaders.LOCATION, "/wallet/" + wallet.getUuid());
         return new WalletResponse(wallet);

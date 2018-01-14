@@ -15,10 +15,10 @@ public class Payout {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet")
 
-    private final Wallet wallet;
+    private Wallet wallet;
 
     @Column(name = "value")
-    private final BigDecimal value;
+    private BigDecimal value;
 
     public Long getId() {
         return id;
@@ -31,6 +31,20 @@ public class Payout {
     public BigDecimal getValue() {
         return value;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public Payout() {}
 
     public Payout(Wallet wallet, BigDecimal value) {
         this.wallet = wallet;

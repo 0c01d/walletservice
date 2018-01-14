@@ -10,10 +10,10 @@ public class Wallet {
 
     @Id
     @Column(name = "uuid")
-    private final UUID uuid;
+    private UUID uuid;
 
     @Column(name = "balance")
-    private final BigDecimal balance;
+    private BigDecimal balance;
 
     public UUID getUuid() {
         return uuid;
@@ -22,6 +22,16 @@ public class Wallet {
     public BigDecimal getBalance() {
         return balance;
     }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Wallet() {}
 
     public Wallet(UUID uuid, BigDecimal balance) {
         this.uuid = uuid;

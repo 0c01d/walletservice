@@ -30,7 +30,7 @@ public class DepositServiceImpl implements DepositService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Deposit create(DepositRequest depositRequest) throws DepositLimitException {
         Wallet wallet = walletService.getWalletByUuid(depositRequest.getWalletUUID());
 
@@ -39,9 +39,9 @@ public class DepositServiceImpl implements DepositService {
         }
 
         Deposit deposit = new Deposit(wallet, depositRequest.getValue());
-        Wallet walletNewBalance = new Wallet(wallet.getUuid(), wallet.getBalance().add(depositRequest.getValue()));
+        wallet.setBalance(wallet.getBalance().add(depositRequest.getValue()));
 
-        walletService.save(walletNewBalance);
+        walletService.save(wallet);
         return depositRepository.save(deposit);
     }
 

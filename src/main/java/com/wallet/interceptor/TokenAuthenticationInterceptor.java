@@ -1,6 +1,8 @@
 package com.wallet.interceptor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wallet.Application;
 import org.springframework.http.HttpStatus;
@@ -11,10 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Component
@@ -28,8 +27,8 @@ public class TokenAuthenticationInterceptor extends HandlerInterceptorAdapter {
         List<Client> clients = new ArrayList<>();
         try {
             ObjectMapper mapper = new ObjectMapper();
-            clients = mapper.readValue(Application.class.getClassLoader().getResourceAsStream("auth.json"),
-                    new TypeReference<List<Client>>(){});
+            JsonNode json = mapper.readTree(Application.class.getClassLoader().getResourceAsStream("auth.json"));
+            clients = mapper.readValue(json.get("clients").toString(), new TypeReference<List<Client>>(){});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,7 +139,7 @@ final class Client {
         return secret;
     }
 
-    Client(Integer id, String secret) {
+    Client(@JsonProperty("id") Integer id, @JsonProperty("secret") String secret) {
         this.id = id;
         this.secret = secret;
     }
