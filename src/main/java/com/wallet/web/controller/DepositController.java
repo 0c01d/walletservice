@@ -30,6 +30,7 @@ public class DepositController {
         response.addHeader(HttpHeaders.LOCATION, "/deposit/" + depositRequest.getWalletUUID());
         return new DepositResponse(deposit);
     }
+
     @RequestMapping(value = "/{depositUUID}", method = RequestMethod.GET)
     public List<DepositResponse> getListDepositByUuid(@PathVariable("depositUUID") UUID uuid, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size) {
         return depositService.getDepositByWalletUuid(uuid, page, size)

@@ -25,7 +25,7 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("DepositController Test")
-public class DepositControllerTest {
+class DepositControllerTest {
 
     private URI l;
 

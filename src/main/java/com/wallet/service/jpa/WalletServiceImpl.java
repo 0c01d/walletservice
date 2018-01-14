@@ -3,7 +3,6 @@ package com.wallet.service.jpa;
 import com.wallet.domain.Wallet;
 import com.wallet.repository.WalletRepository;
 import com.wallet.service.WalletService;
-import com.wallet.web.model.WalletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,7 @@ public class WalletServiceImpl implements WalletService {
     }
     @Override
     @Transactional
-    public Wallet createWallet(WalletRequest walletRequest) {
+    public Wallet createWallet(String walletRequest) {
         Wallet wallet = new Wallet()
                 .setUuid(UUID.randomUUID())
                 .setBalance(0);

@@ -2,7 +2,6 @@ package com.wallet.web.controller;
 
 import com.wallet.domain.Wallet;
 import com.wallet.service.WalletService;
-import com.wallet.web.model.WalletRequest;
 import com.wallet.web.model.WalletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +29,7 @@ public class WalletController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public WalletResponse createWallet(@RequestBody WalletRequest walletRequest, HttpServletResponse response) {
+    public WalletResponse createWallet(@RequestBody String walletRequest, HttpServletResponse response) {
         Wallet wallet = walletService.createWallet(walletRequest);
         response.addHeader(HttpHeaders.LOCATION, "/wallet/" + wallet.getUuid());
         return new WalletResponse(wallet);

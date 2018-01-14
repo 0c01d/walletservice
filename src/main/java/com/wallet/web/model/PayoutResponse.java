@@ -12,13 +12,13 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PayoutResponse {
     Integer id;
-    UUID uuid;
+    UUID walletUUID;
     Integer value;
 
 
     public PayoutResponse(Payout payout) {
         this.id = payout.getId();
-        this.uuid = payout.getWallet().getUuid();
+        this.walletUUID = payout.getWallet().getUuid();
         this.value = payout.getValue();
     }
 }
