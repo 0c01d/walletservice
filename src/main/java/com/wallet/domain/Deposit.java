@@ -13,10 +13,10 @@ public class Deposit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deposit_wallet_uuid")
+    @JoinColumn(name = "wallet")
     private Wallet wallet;
 
-    @Column(name = "deposit_value")
+    @Column(name = "value")
     private BigDecimal value;
 
     public Long getId() {

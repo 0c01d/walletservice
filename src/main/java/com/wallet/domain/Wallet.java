@@ -19,12 +19,12 @@ public class Wallet {
         return uuid;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
     }
 
     public void setBalance(BigDecimal balance) {

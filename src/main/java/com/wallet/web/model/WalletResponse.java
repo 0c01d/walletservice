@@ -9,11 +9,11 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class WalletResponse {
 
-    private final UUID uuid;
+    private final UUID walletUUID;
     private final BigDecimal balance;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getWalletUUID() {
+        return walletUUID;
     }
 
     public BigDecimal getBalance() {
@@ -21,7 +21,7 @@ public class WalletResponse {
     }
 
     public WalletResponse(Wallet wallet) {
-        this.uuid = wallet.getUuid();
+        this.walletUUID = wallet.getUuid();
         this.balance = wallet.getBalance();
     }
 }

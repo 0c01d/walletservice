@@ -14,7 +14,6 @@ public class Payout {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wallet")
-
     private Wallet wallet;
 
     @Column(name = "value")

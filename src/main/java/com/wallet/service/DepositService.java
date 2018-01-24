@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface DepositService {
 
     Deposit create(DepositRequest depositRequest) throws DepositLimitException;
-    Page<Deposit> getDepositByWalletUuid(UUID uuid, Integer page, Integer size);
+    Page<Deposit> getDepositByWalletUuid(UUID walletUUID, Integer page, Integer size);
 }

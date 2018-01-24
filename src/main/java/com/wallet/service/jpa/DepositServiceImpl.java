@@ -47,10 +47,10 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Deposit> getDepositByWalletUuid(UUID uuid, Integer page, Integer size){
+    public Page<Deposit> getDepositByWalletUuid(UUID walletUUID, Integer page, Integer size){
         if (page == null) page = 0;
         if (size == null) size = 5;
-        return depositRepository.findAllDepositByWalletUuid(uuid, PageRequest.of(page, size));
+        return depositRepository.findAllDepositByWalletUuid(walletUUID, PageRequest.of(page, size));
 
     }
 }

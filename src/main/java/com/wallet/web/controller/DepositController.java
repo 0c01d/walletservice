@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class DepositController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    public DepositResponse createDeposit(@RequestBody DepositRequest depositRequest, HttpServletResponse response)
+    public DepositResponse createDeposit(@Valid @RequestBody DepositRequest depositRequest, HttpServletResponse response)
             throws DepositLimitException {
         Deposit deposit = depositService.create(depositRequest);
         response.addHeader(HttpHeaders.LOCATION, "/deposit/" + depositRequest.getWalletUUID());
@@ -34,10 +35,10 @@ public class DepositController {
     }
 
     @RequestMapping(value = "/{depositUUID}", method = RequestMethod.GET)
-    public List<DepositResponse> getListDepositByUuid(@PathVariable("depositUUID") UUID uuid,
+    public List<DepositResponse> getListDepositByUuid(@PathVariable("depositUUID") UUID walletUUID,
                                                       @RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "size", required = false) Integer size) {
-        return depositService.getDepositByWalletUuid(uuid, page, size)
+        return depositService.getDepositByWalletUuid(walletUUID, page, size)
                 .getContent()
                 .stream()
                 .map(DepositResponse::new)

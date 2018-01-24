@@ -44,9 +44,9 @@ public class PayoutServiceImpl implements PayoutService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Payout> getPayoutByWalletUuid(UUID uuid, Integer page, Integer size) {
+    public Page<Payout> getPayoutByWalletUuid(UUID walletUUID, Integer page, Integer size) {
         if (page == null) page = 0;
         if (size == null) size = 5;
-        return payoutRepository.findAllPayoutByWalletUuid(uuid, PageRequest.of(page, size));
+        return payoutRepository.findAllPayoutByWalletUuid(walletUUID, PageRequest.of(page, size));
     }
 }

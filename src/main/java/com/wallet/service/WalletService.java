@@ -8,10 +8,7 @@ import java.util.UUID;
 public interface WalletService {
 
     Wallet create();
-
     Wallet save(Wallet wallet);
-
-    Wallet getWalletByUuid(UUID uuid) throws EntityNotFoundException;
-
-    void deleteWalletByUuid(UUID uuid);
+    Wallet getWalletByUuid(UUID walletUUID) throws EntityNotFoundException;
+    void deleteWalletByUuid(UUID walletUUID);
 }

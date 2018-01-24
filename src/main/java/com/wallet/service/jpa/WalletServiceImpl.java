@@ -21,9 +21,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet getWalletByUuid(UUID uuid) throws EntityNotFoundException {
-        return walletRepository.findById(uuid).orElseThrow(() ->
-            new EntityNotFoundException("Wallet '{" + uuid + "}' not found")
+    public Wallet getWalletByUuid(UUID walletUUID) throws EntityNotFoundException {
+        return walletRepository.findById(walletUUID).orElseThrow(() ->
+            new EntityNotFoundException("Wallet '{" + walletUUID + "}' not found")
         );
     }
 
@@ -39,7 +39,7 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void deleteWalletByUuid(UUID uuid){
-        walletRepository.deleteById(uuid);
+    public void deleteWalletByUuid(UUID walletUUID){
+        walletRepository.deleteById(walletUUID);
     }
 }

@@ -55,30 +55,30 @@ public class TokenAuthenticationInterceptor extends HandlerInterceptorAdapter {
     }
 
     private Client clientByAuthorizationCredentials(String authorization) {
-        AtomicReference<Client> clientByAuthorization = new AtomicReference<>(null);
+        final Client[] clientByAuthorization = {null};
         if (authorization != null && authorization.startsWith("Basic")) {
             String base64Credentials = authorization.substring("Basic".length()).trim();
             String[] credentials = new String(DatatypeConverter.parseBase64Binary(base64Credentials)).split(":");
             Client checkClient = new Client(tryParseId(credentials[0]), credentials[1]);
             clients.forEach((client -> {
                 if (client.equals(checkClient)) {
-                    clientByAuthorization.set(client);
+                    clientByAuthorization[0]=client;
                 }
             }));
         }
-        return clientByAuthorization.get();
+        return clientByAuthorization[0];
     }
 
     private Boolean checkAuthToken(String token) {
         try {
-            AtomicReference<String> clientSecret = new AtomicReference<>("");
+            final String[] clientSecret = {""};
             String authToken = token.split(":")[0];
             String expirationToken = token.split(":")[1];
             Integer clientId = Integer.parseInt(token.split(":")[2]);
             Date expirationDate = new Date(Long.parseLong(token.split(":")[3]));
 
             clients.forEach(client -> {
-                if (client.getId().equals(clientId)) { clientSecret.set(client.getSecret()); }
+                if (client.getId().equals(clientId)) { clientSecret[0] =client.getSecret(); }
             });
 
             MessageDigest authDigest = MessageDigest.getInstance("SHA-1");
